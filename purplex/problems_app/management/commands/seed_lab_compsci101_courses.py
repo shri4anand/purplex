@@ -60,16 +60,15 @@ MECHANISM_DISPLAY = {
 # Source-to-task mapping (the five EiPL problems from the previous trial)
 # ----------------------------------------------------------------------
 TASK_SOURCES = {
-    1: "anagram-checker",  # warm-up,        no hints
+    1: "anagram-checker",  # warm-up,        all hints
     2: "count-lowercase-vowels",  # variable hint,  1 of 3 mechanisms
     3: "palindrome-checker",  # variable hint,  1 of 3 mechanisms
     4: "valid-parentheses",  # variable hint,  1 of 3 mechanisms
     5: "reverse-words-in-a-string",  # free choice,    all hints on
 }
 
-NO_HINT_TASKS = {1}  # warm-up — no hints offered
 VARIABLE_HINT_TASKS = {2, 3, 4}  # one assigned mechanism per course
-FREE_CHOICE_TASKS = {5}  # all three hints offered
+FREE_CHOICE_TASKS = {1, 5}  # all three hints offered (task 1 = warm-up)
 
 # Docstring injections for sources that don't ship one in their
 # reference_solution. We replace the blank line at line 2 in place so existing
@@ -282,7 +281,6 @@ class Command(BaseCommand):
                 self._copy_test_cases(source, clone, TestCase)
                 if task_num in FREE_CHOICE_TASKS:
                     self._copy_all_hints(source, clone, ProblemHint)
-                # NO_HINT_TASKS: deliberately no hint rows created.
 
         # ------------------------------------------------------------------
         # 2. Build six problem sets + memberships (5 problems each, in task order)
@@ -503,7 +501,7 @@ class Command(BaseCommand):
     def _print_summary(self, instructor, co_instructors, missing_co_instructors):
         """Render the human-readable summary after the seed transaction commits."""
         course_ids = [f"COMPSCI101{letter}" for letter in LATIN_SQUARE]
-        shared_task_count = len(NO_HINT_TASKS) + len(FREE_CHOICE_TASKS)
+        shared_task_count = len(FREE_CHOICE_TASKS)
         clone_count = shared_task_count + len(VARIABLE_HINT_TASKS) * 3
         ps_count = len(LATIN_SQUARE)
         summary_lines = [
@@ -530,8 +528,8 @@ class Command(BaseCommand):
         summary_lines.append("")
         summary_lines.append("  Sources (all EiPL, all use metasyntactic names):")
         for task_num, source_slug in TASK_SOURCES.items():
-            if task_num in NO_HINT_TASKS:
-                label = "warm-up, no hints"
+            if task_num == 1:
+                label = "warm-up, all hints"
             elif task_num in FREE_CHOICE_TASKS:
                 label = "free choice, all hints"
             else:
