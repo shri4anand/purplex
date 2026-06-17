@@ -191,7 +191,7 @@
       "sectionLabel": "Discover Function Behavior and Replicate Implementation"
     },
     "probeableSpec": {
-      "sectionLabel": "Discover and explain the function",
+      "sectionLabel": "Discover and improve the specification",
       "describeFunction": "Describe What the Function Does"
     },
     "debugFix": {
@@ -211,6 +211,8 @@
       "tooltipDefault": "Query the oracle with these inputs",
       "srDuplicate": "These inputs were already probed. Result: {result}",
       "paramAriaLabel": "Enter value for {name} (type: {type})",
+      "paramAriaLabelNoType": "Enter value for {name}",
+      "valuePlaceholder": "value",
       "cachedResultAriaLabel": "Cached result: {result}"
     },
     "refute": {
